@@ -1,10 +1,15 @@
-# 16-bit-Kogge-Stone Adder IC Design
-Kogge-Stone Adder is one of the parallel prefix type carry look ahead adder. Peter M. Kogge and Harold S. Stone constructed the KSA, which they have been published in year 1973. The Kogge-Stone prefix adder is the fastest adder. In VLSI implementations, the KS(Kogge-Stone) adder performs the best. With minimal fan-outs, the Kogge-Stone Adder has a large area. The Kogge-Stone Adder is commonly as a PPA that executes fastest logical additive operation. Because it exhibits the least amount of delay among the other architectures, the Kogge-Stone Adder is used for wide adders. At the each stage, the KS tree accomplishes fan-out of 2 at stages and log2 N stages. This is an effect of expense of having to route multiple lengthy wires between these stages. This tree also contains those additional PG cells, though which may not have such an effect on the area if an structure has been used to delay growth which tends to increase with an log N. Each vertical stage in figure generates bits for propagate and generation. The final step produces the generate bits, after in which they are XOR’ed with the input’s are initially propagated to create the sum bits.
+# 16-bit-Sklansky Adder IC Design
+The term "divide-and-conquer tree" also applies to the Sklansky adder. The minimum
+depth prefix network provided by Sklansky’s (1960) conditionally sum of addition logic
+for prefix addition will comes in the expense of increasing the fan-outs in some computational nodes. The longest lateral fanning wires extend outward from a node to
+n/2 additional nodes . Large amounts of latency are accounted for by the Sklansky’s
+adder’s fan-outs, which will see a significant increase in both the critical path and in-puts to outputs. When the adder’s bit count increases, this results in a decrease in the structure’s performance. Therefore, The no of computational nodes is indicated as [n/2.(log2(n))] .
 
-![Kogge-Stone](https://user-images.githubusercontent.com/113964084/200914307-75676712-e01d-4ae3-a13c-8192eec3d988.png)
+
+![Sklansky](https://user-images.githubusercontent.com/113964084/213919568-b14e951d-cbcf-4cc8-9972-9425dc7472b0.png)
 
 
-This adder have been designed using the Verilog Hardware Description Language using Xilinx.ISE.Navigator.10.1 software, and modelsim.6.5e was used for all simulations. It is analysed and compared to determine how the proposed adders perform. The implementation code for 16-bit Kogge-Stone Adder was developed in this proposed architecture, and delay and area values have
+This adder have been designed using the Verilog Hardware Description Language using Xilinx.ISE.Navigator.10.1 software, and modelsim.6.5e was used for all simulations. It is analysed and compared to determine how the proposed adders perform. The implementation code for 16-bit Sklansky Adder was developed in this proposed architecture, and delay and area values have
 been observed . The correlation of adders is the major element in the trade-off between these various topologies. These simulated output wave forms and RTL schematics have been generated and synthesis is carried out by chipscope. OpenLANE and Caravel are used with Skywater 130nm PDK. OpenLANE flow consists of multiple itersative stages where we obtain GDSII form RTL netlist. This chip design acquired from OpenLANE is used in caravel to place it on an SoC and design is hardened by placing our HDL code in user_project_wrapper and user_proj_example in caravel folders.
 
 Open Source Digital ASIC Design requires three open-source components:  
@@ -42,7 +47,7 @@ Open Source Digital ASIC Design requires three open-source components:
 ``` 
 ├── OpenLane             -> directory where the tool can be invoked (run docker first)
 │   ├── designs          -> All designs must be extracted from this folder
-│   │   │   ├── ksa16 -> Design used as case study for this workshop
+│   │   │   ├── Sklansky16 -> Design used as case study for this workshop
 │   |   |   ├── ...
 |   |   ├── ...
 ├── pdks                 -> contains pdk related files 
@@ -58,7 +63,7 @@ Inside a specific design folder contains a `config.tcl` which overrides the defa
 2. config.tcl in `OpenLane/designs/[design]/`
 3. Default values in `OpenLane/configuration/`
 
-The task is to find the flip-flop ratio ratio for the design `ksa16`.  For the OpenLane installation, the steps are very straight forward and can be found on the [OpenLane repo](https://github.com/The-OpenROAD-Project/OpenLane).
+The task is to find the flip-flop ratio ratio for the design `Sklansky16`.  For the OpenLane installation, the steps are very straight forward and can be found on the [OpenLane repo](https://github.com/The-OpenROAD-Project/OpenLane).
 
 ***Set configuration variables.*** Before running floorplan stage, the configuration variables or switches must be configured first. The configuration variables are on `openlane/configuration`:  
 
@@ -76,7 +81,7 @@ The task is to find the flip-flop ratio ratio for the design `ksa16`.  For the O
 
 ```  
 
-The  `README.md` describes all configuration variables for every stage and the tcl files contain the default OpenLANE settings. All configurations accepted by the current run is on `openlane/designs/ksa16/runs/config.tcl`. This may come either from (with priority order):
+The  `README.md` describes all configuration variables for every stage and the tcl files contain the default OpenLANE settings. All configurations accepted by the current run is on `openlane/designs/Sklansky16/runs/config.tcl`. This may come either from (with priority order):
  - PDK specific configuration inside the design folder
  - `config.tcl` inside the design folder
  - System default settings inside `openlane/configurations`
@@ -90,7 +95,7 @@ The  `README.md` describes all configuration variables for every stage and the t
  
  
 **2. Design Setup Stage:**
- - `% prep -design ksa16` = Setup the filesystem where the OpenLANE tools can dump the outputs. This also creates a `run/` folder inside the specific design directory which contains the command log files, results, and the reports dump by each tools. These folders will be empty for now except for lef files generated by this design setup stage. This merged the [cell LEF files](https://teamvlsi.com/2020/05/lef-lef-file-in-asic-design.html) `.lef` and [technology LEF files](https://teamvlsi.com/2020/05/lef-lef-file-in-asic-design.html) `.tlef` generating `merged.nom.lef` inside `run/tmp/`
+ - `% prep -design Sklansky16` = Setup the filesystem where the OpenLANE tools can dump the outputs. This also creates a `run/` folder inside the specific design directory which contains the command log files, results, and the reports dump by each tools. These folders will be empty for now except for lef files generated by this design setup stage. This merged the [cell LEF files](https://teamvlsi.com/2020/05/lef-lef-file-in-asic-design.html) `.lef` and [technology LEF files](https://teamvlsi.com/2020/05/lef-lef-file-in-asic-design.html) `.tlef` generating `merged.nom.lef` inside `run/tmp/`
  
 
 **3. Run synthesis:**
@@ -122,7 +127,7 @@ The  `README.md` describes all configuration variables for every stage and the t
 
 ``` 
 
-After running synthesis, inside the `runs/[date]/results/synthesis` is `ksa16_synthesis.v` which is the mapping of the netlist to standard cell library using ABC. The `runs/[date]/reports/synthesis` will contain synthesis statistic reports and static timing analysis reports. The `runs/[date]/synthesis/logs` contains log files for the terminal output dumps for running yosys and OpenSTA.
+After running synthesis, inside the `runs/[date]/results/synthesis` is `Sklansky16_synthesis.v` which is the mapping of the netlist to standard cell library using ABC. The `runs/[date]/reports/synthesis` will contain synthesis statistic reports and static timing analysis reports. The `runs/[date]/synthesis/logs` contains log files for the terminal output dumps for running yosys and OpenSTA.
 
 ```
 29. Printing statistics.
@@ -164,8 +169,7 @@ After running synthesis, inside the `runs/[date]/results/synthesis` is `ksa16_sy
 
 **3. Yosys synthesis:**
 
-
-![KSA16_yoys](https://user-images.githubusercontent.com/113964084/201079457-b5494078-f4f3-45f3-9e87-cf4ec6d49f43.png)
+![sklansky_yosys](https://user-images.githubusercontent.com/113964084/213919603-16a60c27-46db-48f7-83c3-f3d72a643f64.png)
 
 
 ### Floorplan Stage:
@@ -221,10 +225,12 @@ if { [file exists $filename] == 1} {
 
 ```
 ```
-magic -T /home/ProgramFiles/openlane/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef read ksa16.floorplan.def
+magic -T /home/ProgramFiles/openlane/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef read Sklansky16.floorplan.def
 ```  
 
-file:///home/ut01/Documents/FINAL/OPENLANE/KSA16/KSA/KSA_floor%20plan.png![image](https://user-images.githubusercontent.com/113964084/201077516-3f223986-67d5-4125-a71f-5097e6b6ec3c.png)
+file:///home/ut01/Documents/FINAL/OPENLANE/SKLANSKY16/SKLANSKY/SKLANSKY_floor%20plan.png
+
+![Sklansky_Floorplaning_txt](https://user-images.githubusercontent.com/113964084/213919665-a1496429-d542-472e-b509-c33fae9b381a.png)
 
 
 
@@ -240,14 +246,13 @@ The goal of placement is not yet on timing but on congestion. Also, standard cel
 
 
 ```
-magic -T //home/ProgramFiles/openlane/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef read ksa16.placement.def
+magic -T //home/ProgramFiles/openlane/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef read Sklansky16.placement.def
 ```  
 
-file:///home/ut01/Documents/FINAL/OPENLANE/KSA16/KSA/KSA16_placement.png![image](https://user-images.githubusercontent.com/113964084/201077018-085aff7c-03e6-4e58-9788-cd90b616b192.png)
+file:///home/ut01/Documents/FINAL/OPENLANE/SKLANSKY16/SKLANSKY/SKLANSKY16_placement.png
 
-![KSA16_placement zoom2](https://user-images.githubusercontent.com/113964084/201089931-3207c969-c239-471b-85d0-c25cf020416b.png)
+![Sklansky_Placement_txt](https://user-images.githubusercontent.com/113964084/213919712-d7d31835-a503-4fca-9364-f766e5abb187.png)
 
-![KSA16_placement zoom3](https://user-images.githubusercontent.com/113964084/201089948-9e31e8d4-85c0-4bb4-89fa-d18a7ce19261.png)
 
 ```
 Placement Analysis
@@ -336,10 +341,10 @@ Best reference for this the [Triton Route paper](https://www.google.com/url?sa=t
 
 ### Final Layout:
 ```
-magic -T /home/ProgramFiles/openlane/designs/ksa16/runs/KSA16/results/magic/ksa16.mag
+magic -T /home/ProgramFiles/openlane/designs/Sklansky16/runs/SKLANSKY16/results/magic/Sklansky16.mag
 ```
 
-![ksa_klyout](https://user-images.githubusercontent.com/113964084/201312352-27519981-6de9-4ad6-b188-a3d51b9cd8d9.png)
+![sklansky_klayout](https://user-images.githubusercontent.com/113964084/213919741-c33cc129-e20a-4b61-8d5b-c05cbe266dda.png)
 
 
 **Library Characterization:**
@@ -384,10 +389,10 @@ The library cell developer must adhere to the rules given on the inputs so that 
 
 Open the def file via magic with no DRC errors: 
 ```
-magic -T /home/ProgramFiles/openlane/designs/ksa16/runs/KSA16/results/magic/ksa16.gds
+magic -T /home/ProgramFiles/openlane/designs/Sklansky16/runs/SKLANSKY16/results/magic/Sklansky16.gds
 ```
 
-![KSA16_magic](https://user-images.githubusercontent.com/113964084/201313804-a8cc5644-7dbd-42cc-afcf-501c5a04d055.png)
+![sklansky16_magic](https://user-images.githubusercontent.com/113964084/213919759-a386ce11-82a0-42bd-9f04-556e5d9147ac.png)
 
 
 ```
@@ -432,7 +437,7 @@ With this Report we place an SoC, So we need to do in Carvel Harness
 
 
 ```
-/home/ProgramFiles/openlane/designs/ksa16/runs/final/reports/manufacturability_report.rpt
+/home/ProgramFiles/openlane/designs/Sklansky16/runs/final/reports/manufacturability_report.rpt
 ```
 ```
 Design Name: ksa16
